@@ -1,0 +1,71 @@
+<%- include('partials/header') %>
+
+<main class="main-content edit-page">
+  <section class="form-section">
+    <div class="edit-header">
+      <h2><i class="fa-solid fa-pencil"></i> Edit Tree</h2>
+      <a href="/" class="btn-back"><i class="fa-solid fa-arrow-left"></i> Back</a>
+    </div>
+
+    <% if (errors.length) { %>
+      <div class="alert alert-error">
+        <ul>
+          <% errors.forEach(e => { %>
+            <li><i class="fa-solid fa-circle-exclamation"></i> <%= e %></li>
+          <% }) %>
+        </ul>
+      </div>
+    <% } %>
+
+    <form action="/edit/<%= tree._id %>" method="POST" enctype="multipart/form-data" novalidate>
+
+      <div class="form-group">
+        <label for="treename">Tree Name <span class="required">*</span></label>
+        <input
+          type="text"
+          id="treename"
+          name="treename"
+          value="<%= tree.treename %>"
+          class="<%= errors.some(e => e.includes('Name')) ? 'input-error' : '' %>"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description <span class="required">*</span></label>
+        <textarea
+          id="description"
+          name="description"
+          rows="4"
+          class="<%= errors.some(e => e.includes('Description')) ? 'input-error' : '' %>"
+        ><%= tree.description %></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Current Image</label>
+        <% if (tree.image) { %>
+          <div class="current-img-wrap">
+            <img src="<%= tree.image %>" alt="<%= tree.treename %>" class="current-img" />
+          </div>
+        <% } else { %>
+          <p class="no-img-note"><i class="fa-solid fa-image"></i> No image uploaded</p>
+        <% } %>
+      </div>
+
+      <div class="form-group">
+        <label for="image">Replace Image <span class="optional">(leave empty to keep current)</span></label>
+        <input type="file" id="image" name="image" accept="image/*" />
+      </div>
+
+      <div class="form-actions edit-actions">
+        <button type="submit" class="btn btn-primary">
+          <i class="fa-solid fa-floppy-disk"></i> Save Changes
+        </button>
+        <a href="/" class="btn btn-cancel">
+          <i class="fa-solid fa-xmark"></i> Cancel
+        </a>
+      </div>
+    </form>
+  </section>
+</main>
+
+<%- include('partials/footer') %>
